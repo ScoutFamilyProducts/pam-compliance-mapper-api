@@ -1,6 +1,7 @@
 export interface VendorCapability {
   vendorId: string;
   vendorName: string;
+  aliases?: string[];
   products: string[];
   capabilities: string[];
   notes: string | null;
@@ -13,6 +14,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-001",
     vendorName: "CyberArk",
+    aliases: ["CyberArk Conjur", "CyberArk PAM", "CyberArk EPM", "CyberArk Endpoint Privilege Manager"],
     products: ["CyberArk PAM", "CyberArk Conjur", "CyberArk Endpoint Privilege Manager", "CyberArk Vendor PAM", "CyberArk Privileged Threat Analytics"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-004", "PAM-005", "PAM-006", "PAM-007", "PAM-008", "PAM-009", "PAM-010", "PAM-011", "PAM-012", "PAM-013", "PAM-015", "PAM-016", "PAM-018", "PAM-019", "PAM-020", "PAM-022", "PAM-023", "PAM-024", "PAM-025", "PAM-026", "PAM-027", "PAM-028", "PAM-029", "PAM-030", "PAM-031", "PAM-032", "PAM-033"],
     notes: "Acquired by Palo Alto Networks February 2026. Continues to operate under CyberArk brand. Market share leader in enterprise PAM. CyberArk Conjur handles DevOps secrets management. Privileged Threat Analytics (PTA) provides ML-based behavioral analytics.",
@@ -29,6 +31,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-003",
     vendorName: "Delinea",
+    aliases: ["Delinea Secret Server", "Delinea Fastpath", "Delinea Platform Behavior Analytics", "Delinea Continuous Identity Discovery", "Delinea StrongDM", "Delinea Privilege Manager", "Delinea Platform"],
     products: ["Secret Server", "Privilege Manager", "Privilege Control for Servers", "Delinea Platform", "Delinea StrongDM", "Fastpath Identity Lifecycle Management", "Delinea MCP Server", "Continuous Identity Discovery"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-004", "PAM-005", "PAM-006", "PAM-007", "PAM-008", "PAM-009", "PAM-010", "PAM-011", "PAM-012", "PAM-013", "PAM-015", "PAM-016", "PAM-018", "PAM-019", "PAM-020", "PAM-021", "PAM-022", "PAM-023", "PAM-024", "PAM-025", "PAM-026", "PAM-027", "PAM-028", "PAM-029", "PAM-030", "PAM-031", "PAM-032", "PAM-033"],
     notes: "Secret Server handles credential vaulting and discovery including local accounts on servers, databases, and network gear. Privilege Control for Servers records ALL connections including direct connections not launched through the PAM broker. Privilege Manager handles endpoint least privilege and application control with JIT/JEA capability including application scoping during approved windows. StrongDM acquired by Delinea — provides JIT runtime authorization with ephemeral credentials via gateway and API calls over port 443. Fastpath acquired by Delinea — provides IGA and joiner-mover-leaver automation. Delinea Platform includes ML-based behavior analytics watching both human users and privileged secrets. Delinea Engine handles all connections via port 443 SaaS or internally — acts as software-defined jump box. Continuous Identity Discovery (CID) continuously scans cloud providers and AD for shadow admins, NHI, and AI identities.",
@@ -45,6 +48,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-005",
     vendorName: "KeeperPAM",
+    aliases: ["Keeper Secrets Manager", "Keeper", "Keeper Security"],
     products: ["KeeperPAM", "Keeper Secrets Manager", "Keeper SSO Connect"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-004", "PAM-005", "PAM-006", "PAM-007", "PAM-008", "PAM-009", "PAM-010", "PAM-011", "PAM-012", "PAM-013", "PAM-015", "PAM-016", "PAM-018", "PAM-019", "PAM-020", "PAM-022", "PAM-023", "PAM-024", "PAM-025", "PAM-026", "PAM-027", "PAM-028", "PAM-029", "PAM-030", "PAM-031", "PAM-033"],
     notes: "Zero-knowledge architecture. SSO Connect integrates with any SAML-compliant IdP. Cloud-native. Transparent pricing at $85 per user/month minimum 5 users.",
@@ -77,6 +81,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-009",
     vendorName: "Microsoft",
+    aliases: ["Microsoft Entra ID", "Microsoft Active Directory", "Microsoft LAPS", "Microsoft Sentinel", "Azure Key Vault", "Azure Monitor Activity Log", "Microsoft Entra ID PIM"],
     products: ["Microsoft Entra ID", "Microsoft Active Directory", "Microsoft LAPS", "Microsoft Sentinel", "Azure Key Vault", "Azure Monitor Activity Log", "Microsoft Entra ID PIM"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-004", "PAM-005", "PAM-006", "PAM-009", "PAM-010", "PAM-011", "PAM-012", "PAM-015", "PAM-016", "PAM-017", "PAM-018", "PAM-019", "PAM-020", "PAM-022", "PAM-024", "PAM-025", "PAM-026", "PAM-027", "PAM-031", "PAM-032"],
     notes: "Microsoft LAPS manages local administrator passwords on endpoints — randomizes and rotates per machine. Entra ID PIM provides JIT privileged access for Azure and M365 roles. Azure Key Vault handles secrets and service account credentials. Microsoft Sentinel provides cloud-native SIEM with built-in UEBA.",
@@ -93,6 +98,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-011",
     vendorName: "RSA Security",
+    aliases: ["RSA SecurID", "RSA"],
     products: ["RSA SecurID", "RSA Governance and Lifecycle"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-004", "PAM-011", "PAM-022", "PAM-025", "PAM-026", "PAM-027"],
     notes: "RSA SecurID is legacy hardware token MFA widely deployed in enterprise. RSA Governance and Lifecycle provides IGA capability.",
@@ -117,6 +123,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-014",
     vendorName: "Google",
+    aliases: ["Google Chronicle", "Google Cloud IAM", "Google Workspace"],
     products: ["Google Workspace", "Google Titan Security Key", "Google Cloud IAM", "Google Cloud Audit Logs", "Google Chronicle"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-005", "PAM-016", "PAM-018", "PAM-019", "PAM-020", "PAM-025", "PAM-026", "PAM-027", "PAM-032"],
     notes: "Google Workspace provides MFA and SSO for Google ecosystem. Titan Security Key is FIDO2 hardware token. Google Cloud IAM enforces least privilege for cloud workloads. Google Chronicle is cloud-native SIEM. Cloud Audit Logs capture non-interactive privileged activity.",
@@ -125,6 +132,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-015",
     vendorName: "AWS",
+    aliases: ["AWS Secrets Manager", "AWS IAM", "AWS CloudTrail"],
     products: ["AWS IAM", "AWS IAM Identity Center", "AWS Secrets Manager", "AWS CloudTrail"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-005", "PAM-006", "PAM-009", "PAM-015", "PAM-016", "PAM-018", "PAM-019", "PAM-020", "PAM-024", "PAM-025", "PAM-026", "PAM-027", "PAM-031"],
     notes: "AWS IAM enforces least privilege through policies and roles. AWS Secrets Manager handles dynamic credential generation and service account rotation. CloudTrail provides immutable audit logging for all AWS API calls including non-interactive service account activity.",
@@ -133,6 +141,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-016",
     vendorName: "IBM",
+    aliases: ["IBM QRadar", "IBM Security Verify"],
     products: ["IBM Security Verify", "IBM Security Directory Services", "IBM QRadar"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-005", "PAM-015", "PAM-017", "PAM-018", "PAM-019", "PAM-020", "PAM-021", "PAM-025", "PAM-026", "PAM-027", "PAM-032"],
     notes: "IBM Security Verify is modern cloud-based IAM and MFA platform. IBM Security Directory Services is LDAP directory widely deployed in financial services and government. IBM QRadar is enterprise SIEM — now part of Palo Alto Networks.",
@@ -141,6 +150,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-017",
     vendorName: "Thales",
+    aliases: ["Thales SafeNet"],
     products: ["Thales SafeNet MFA", "Thales Luna HSM"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-004", "PAM-025", "PAM-026", "PAM-027"],
     notes: "Strong in regulated industries. Hardware token and smart card MFA. Luna HSM handles cryptographic key management.",
@@ -157,6 +167,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-019",
     vendorName: "ManageEngine",
+    aliases: ["ManageEngine PAM360", "ManageEngine ADSelfService Plus", "ManageEngine ADAudit Plus"],
     products: ["ManageEngine ADSelfService Plus", "ManageEngine ADAudit Plus", "ManageEngine PAM360", "ManageEngine ADManager Plus"],
     capabilities: ["PAM-001", "PAM-002", "PAM-003", "PAM-005", "PAM-006", "PAM-008", "PAM-009", "PAM-010", "PAM-011", "PAM-012", "PAM-015", "PAM-017", "PAM-019", "PAM-020", "PAM-021", "PAM-022", "PAM-023", "PAM-024", "PAM-025", "PAM-026", "PAM-027", "PAM-028", "PAM-029", "PAM-030", "PAM-033"],
     notes: "ManageEngine PAM360 is mid-market PAM — on-premises only, does not support cloud-native or Kubernetes environments. ADAudit Plus provides real-time AD change and logon auditing. ADSelfService Plus provides MFA and self-service password management. Strong in environments already using ManageEngine ecosystem.",
@@ -189,6 +200,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-023",
     vendorName: "HashiCorp",
+    aliases: ["HashiCorp Vault"],
     products: ["HashiCorp Vault", "HashiCorp Vault Enterprise"],
     capabilities: ["PAM-006", "PAM-023", "PAM-024", "PAM-028", "PAM-031"],
     notes: "Dynamic secrets engine generates ephemeral credentials per request — no standing credentials to steal. Strong in DevOps and cloud-native environments. Secrets management for service accounts, API keys, SSH keys, and database credentials.",
@@ -245,6 +257,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-030",
     vendorName: "Pathlock",
+    aliases: ["Pathlock GRC", "Pathlock Access Control"],
     products: ["Pathlock GRC", "Pathlock Access Control"],
     capabilities: ["PAM-005", "PAM-007", "PAM-011", "PAM-022", "PAM-034", "PAM-035"],
     notes: "Strong in SAP environments. GRC platform recognized in 2025 Gartner Market Guide for IGA. Handles separation of duties enforcement and access certification.",
@@ -261,6 +274,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-032",
     vendorName: "ServiceNow",
+    aliases: ["ServiceNow GRC", "ServiceNow Identity Governance", "ServiceNow ITSM"],
     products: ["ServiceNow ITSM", "ServiceNow GRC", "ServiceNow Identity Governance"],
     capabilities: ["PAM-011", "PAM-012", "PAM-013", "PAM-017", "PAM-021", "PAM-022", "PAM-034", "PAM-035"],
     notes: "ITSM provides auditable service ticket trail for access granting, revoking, and termination workflows. GRC module supports risk documentation and governance attestation. Veza acquired by ServiceNow December 2025.",
@@ -309,6 +323,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-038",
     vendorName: "Rapid7",
+    aliases: ["Rapid7 InsightIDR", "Rapid7 InsightVM"],
     products: ["Rapid7 InsightIDR", "Rapid7 InsightVM"],
     capabilities: ["PAM-008", "PAM-017", "PAM-019", "PAM-020", "PAM-021", "PAM-028", "PAM-032"],
     notes: "InsightIDR is mid-market SIEM with built-in UEBA and default credential detection. InsightVM provides vulnerability scanning including default credential detection.",
@@ -341,6 +356,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-042",
     vendorName: "Netwrix",
+    aliases: ["Netwrix Privilege Secure", "Netwrix Auditor", "Netwrix Access Analyzer"],
     products: ["Netwrix Auditor", "Netwrix Privilege Secure", "Netwrix Access Analyzer", "Netwrix PingCastle"],
     capabilities: ["PAM-008", "PAM-009", "PAM-010", "PAM-017", "PAM-019", "PAM-020", "PAM-021", "PAM-031", "PAM-032", "PAM-033"],
     notes: "Netwrix Auditor provides comprehensive AD change auditing and compliance reporting. Netwrix Privilege Secure provides JIT access and zero standing privilege architecture. Strong AD and Entra ID integration. Part of broader 1Secure platform combining PAM, DSPM, ITDR, and compliance reporting.",
@@ -541,6 +557,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-067",
     vendorName: "Bitwarden",
+    aliases: ["Bitwarden Secrets Manager"],
     products: ["Bitwarden Business", "Bitwarden Secrets Manager"],
     capabilities: ["PAM-023", "PAM-024"],
     notes: "Open source credential management. Bitwarden Secrets Manager adds service account secrets management capability. No automated rotation. Not a full PAM vault.",
@@ -549,6 +566,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-068",
     vendorName: "Tenable",
+    aliases: ["Tenable Identity Exposure", "Tenable.io", "Tenable Nessus"],
     products: ["Tenable.io", "Tenable Nessus", "Tenable Identity Exposure"],
     capabilities: ["PAM-028", "PAM-032"],
     notes: "Vulnerability management platform with strong default credential detection across network devices, servers, and applications. Tenable Identity Exposure provides Active Directory security assessment and attack path analysis.",
@@ -581,6 +599,7 @@ export const vendorCapabilities: VendorCapability[] = [
   {
     vendorId: "V-072",
     vendorName: "SentinelOne",
+    aliases: ["SentinelOne Singularity Identity", "SentinelOne Attivo Networks"],
     products: ["SentinelOne Singularity Identity", "SentinelOne Attivo Networks"],
     capabilities: ["PAM-008", "PAM-032"],
     notes: "Attivo Networks acquired by SentinelOne — identity threat detection including NHI discovery. Singularity Identity provides identity-based threat detection and response.",

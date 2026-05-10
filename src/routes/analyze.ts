@@ -112,15 +112,84 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
     });
   }
 
-  // Validate vendor names exist
-  const validVendorNames = vendorCapabilities.map(v => v.vendorName);
-  const invalidVendors = vendors.filter(v => !validVendorNames.includes(v));
-  if (invalidVendors.length > 0) {
+  // Fuzzy match vendor names to actual vendors
+  function matchVendor(submittedName: string): string | null {
+    const normalizedInput = submittedName.toLowerCase().trim();
+
+    for (const vendor of vendorCapabilities) {
+      const vendorNameLower = vendor.vendorName.toLowerCase();
+
+      // Exact match (case-insensitive)
+      if (vendorNameLower === normalizedInput) {
+        return vendor.vendorName;
+      }
+
+      // Check aliases (case-insensitive)
+      if (vendor.aliases) {
+        for (const alias of vendor.aliases) {
+          if (alias.toLowerCase() === normalizedInput) {
+            return vendor.vendorName;
+          }
+        }
+      }
+
+      // Check products (case-insensitive)
+      for (const product of vendor.products) {
+        if (product.toLowerCase() === normalizedInput) {
+          return vendor.vendorName;
+        }
+      }
+    }
+
+    // Fuzzy matching: contains or contained-in
+    for (const vendor of vendorCapabilities) {
+      const vendorNameLower = vendor.vendorName.toLowerCase();
+
+      // Input contains vendor name or vendor name contains input
+      if (normalizedInput.includes(vendorNameLower) || vendorNameLower.includes(normalizedInput)) {
+        return vendor.vendorName;
+      }
+
+      // Check aliases with contains matching
+      if (vendor.aliases) {
+        for (const alias of vendor.aliases) {
+          const aliasLower = alias.toLowerCase();
+          if (normalizedInput.includes(aliasLower) || aliasLower.includes(normalizedInput)) {
+            return vendor.vendorName;
+          }
+        }
+      }
+
+      // Check products with contains matching
+      for (const product of vendor.products) {
+        const productLower = product.toLowerCase();
+        if (normalizedInput.includes(productLower) || productLower.includes(normalizedInput)) {
+          return vendor.vendorName;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  // Match submitted vendors and skip unmatched ones silently
+  const matchedVendors = new Set<string>();
+  for (const submittedVendor of vendors) {
+    const matched = matchVendor(submittedVendor);
+    if (matched) {
+      matchedVendors.add(matched);
+    }
+  }
+
+  if (matchedVendors.size === 0) {
     return res.status(400).json({
       success: false,
-      error: `Invalid vendor names: ${invalidVendors.join(', ')}`
+      error: 'No valid vendors could be matched from the submitted list'
     });
   }
+
+  // Use matched vendor names for the rest of the request
+  const resolvedVendors = Array.from(matchedVendors);
 
   // Validate framework keys
   const invalidFrameworks = frameworks.filter(f => !validFrameworks.includes(f));
@@ -136,9 +205,9 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
       apiKey: process.env.ANTHROPIC_API_KEY
     });
 
-    const userPrompt = buildUserPrompt({ vendors, frameworks });
+    const userPrompt = buildUserPrompt({ vendors: resolvedVendors, frameworks });
 
-    console.log(`[${new Date().toISOString()}] Analyzing vendors: ${vendors.join(', ')} against frameworks: ${frameworks.join(', ')}`);
+    console.log(`[${new Date().toISOString()}] Analyzing vendors: ${resolvedVendors.join(', ')} against frameworks: ${frameworks.join(', ')}`);
 
     const response = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
