@@ -217,9 +217,10 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
       messages: [{ role: 'user', content: userPrompt }]
     });
 
-    // Extract text content from response
-    const textContent = response.content.find(block => block.type === 'text');
-    if (!textContent || textContent.type !== 'text') {
+    // Extract and parse JSON from response
+    const rawText = response.content[0]?.type === 'text' ? response.content[0].text : '';
+
+    if (!rawText) {
       console.error(`[${new Date().toISOString()}] No text content in API response`);
       return res.status(503).json({
         success: false,
@@ -227,12 +228,34 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
       });
     }
 
-    // Parse JSON response
+    // Log raw response for debugging
+    console.log(`[${new Date().toISOString()}] Raw Anthropic response:`, rawText.substring(0, 500));
+
+    // Strip markdown code blocks if present
+    const cleaned = rawText
+      .replace(/```json\n?/g, '')
+      .replace(/```\n?/g, '')
+      .trim();
+
+    // Find JSON object boundaries in case there is preamble text
+    const jsonStart = cleaned.indexOf('{');
+    const jsonEnd = cleaned.lastIndexOf('}');
+
+    if (jsonStart === -1 || jsonEnd === -1) {
+      console.error(`[${new Date().toISOString()}] No JSON found in response. Raw text:`, rawText);
+      return res.status(503).json({
+        success: false,
+        error: 'No JSON object found in AI response'
+      });
+    }
+
+    const jsonStr = cleaned.slice(jsonStart, jsonEnd + 1);
+
     let analysis: AnalysisResponse;
     try {
-      analysis = JSON.parse(textContent.text);
+      analysis = JSON.parse(jsonStr);
     } catch (parseError) {
-      console.error(`[${new Date().toISOString()}] Failed to parse AI response as JSON:`, textContent.text);
+      console.error(`[${new Date().toISOString()}] JSON parse failed. Cleaned text:`, jsonStr.substring(0, 500));
       return res.status(503).json({
         success: false,
         error: 'Failed to parse analysis response'

@@ -17,7 +17,9 @@ The data provided is curated from publicly available documentation and professio
 
 Always be vendor-neutral. Do not recommend one vendor over another beyond what the data shows.
 
-Respond only in valid JSON matching the schema provided. No markdown, no preamble, no explanation outside the JSON structure.`;
+Respond only in valid JSON matching the schema provided. No markdown, no preamble, no explanation outside the JSON structure.
+
+CRITICAL: Your response must be ONLY valid JSON. No markdown formatting. No code blocks. No backticks. No preamble text. No explanation. Start your response with { and end with }. Nothing before the opening brace. Nothing after the closing brace.`;
 
 export interface AnalysisRequest {
   vendors: string[];
