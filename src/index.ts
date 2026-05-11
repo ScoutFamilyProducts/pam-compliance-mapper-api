@@ -6,8 +6,16 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: ['https://thepaminsider.com', 'http://localhost:3000'],
-  methods: ['GET', 'POST'],
+  origin: [
+    'https://thepaminsider.com',
+    'https://www.thepaminsider.com',
+    'http://thepaminsider.com',
+    'http://www.thepaminsider.com',
+    'http://localhost:3000',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500'
+  ],
+  methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
 
