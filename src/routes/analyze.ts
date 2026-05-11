@@ -73,7 +73,11 @@ const validFrameworks = [
   'cis_v8',
   'pci_dss_401',
   'hipaa',
-  'nist_csf_20'
+  'nist_csf_20',
+  'iso27001',
+  'soc2',
+  'soxitgc',
+  'cyberinsurance'
 ];
 
 // GET /api/vendors - Return vendor lists for frontend
