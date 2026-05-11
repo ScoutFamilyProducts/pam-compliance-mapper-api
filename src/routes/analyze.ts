@@ -151,25 +151,31 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
         return vendor.vendorName;
       }
 
-      // Check aliases (case-insensitive)
-      if (vendor.aliases) {
-        for (const alias of vendor.aliases) {
-          if (alias.toLowerCase() === normalizedInput) {
-            return vendor.vendorName;
-          }
-        }
-      }
-
       // Check products (case-insensitive)
       for (const product of vendor.products) {
-        if (product.toLowerCase() === normalizedInput) {
+        if (product.productName.toLowerCase() === normalizedInput) {
+          return vendor.vendorName;
+        }
+      }
+    }
+
+    // Also check freeware vendors
+    for (const vendor of freewareCapabilities) {
+      const vendorNameLower = vendor.vendorName.toLowerCase();
+
+      if (vendorNameLower === normalizedInput) {
+        return vendor.vendorName;
+      }
+
+      for (const product of vendor.products) {
+        if (product.productName.toLowerCase() === normalizedInput) {
           return vendor.vendorName;
         }
       }
     }
 
     // Fuzzy matching: contains or contained-in
-    for (const vendor of vendorCapabilities) {
+    for (const vendor of [...vendorCapabilities, ...freewareCapabilities]) {
       const vendorNameLower = vendor.vendorName.toLowerCase();
 
       // Input contains vendor name or vendor name contains input
@@ -177,19 +183,9 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
         return vendor.vendorName;
       }
 
-      // Check aliases with contains matching
-      if (vendor.aliases) {
-        for (const alias of vendor.aliases) {
-          const aliasLower = alias.toLowerCase();
-          if (normalizedInput.includes(aliasLower) || aliasLower.includes(normalizedInput)) {
-            return vendor.vendorName;
-          }
-        }
-      }
-
       // Check products with contains matching
       for (const product of vendor.products) {
-        const productLower = product.toLowerCase();
+        const productLower = product.productName.toLowerCase();
         if (normalizedInput.includes(productLower) || productLower.includes(normalizedInput)) {
           return vendor.vendorName;
         }
