@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import Anthropic from '@anthropic-ai/sdk';
 import { SYSTEM_PROMPT, buildUserPrompt, AnalysisRequest } from '../prompts/system_prompt';
-import { vendorCapabilities } from '../data/vendor_capabilities';
+import { vendorCapabilities, freewareCapabilities } from '../data/vendor_capabilities';
 
 const router = Router();
 
@@ -75,6 +75,33 @@ const validFrameworks = [
   'hipaa',
   'nist_csf_20'
 ];
+
+// GET /api/vendors - Return vendor lists for frontend
+router.get('/vendors', (req: Request, res: Response) => {
+  const commercialVendors = vendorCapabilities.map(v => ({
+    vendorId: v.vendorId,
+    vendorName: v.vendorName,
+    products: v.products.map(p => ({
+      productId: p.productId,
+      productName: p.productName
+    }))
+  }));
+
+  const freeware = freewareCapabilities.map(v => ({
+    vendorId: v.vendorId,
+    vendorName: v.vendorName,
+    products: v.products.map(p => ({
+      productId: p.productId,
+      productName: p.productName
+    }))
+  }));
+
+  res.json({
+    success: true,
+    commercial: commercialVendors,
+    freeware: freeware
+  });
+});
 
 router.post('/analyze-vendors', async (req: Request, res: Response) => {
   const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
