@@ -121,6 +121,9 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
 
   const { vendors, frameworks } = req.body as AnalysisRequest;
 
+  // Debug logging
+  console.log(`[${new Date().toISOString()}] Incoming request body:`, JSON.stringify({ vendors, frameworks }));
+
   // Validation
   if (!vendors || !Array.isArray(vendors) || vendors.length === 0) {
     return res.status(400).json({
@@ -219,13 +222,18 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
   const resolvedVendors = Array.from(matchedVendors);
 
   // Validate framework keys
+  console.log(`[${new Date().toISOString()}] Validating frameworks: ${JSON.stringify(frameworks)}`);
+  console.log(`[${new Date().toISOString()}] Valid frameworks list: ${JSON.stringify(validFrameworks)}`);
   const invalidFrameworks = frameworks.filter(f => !validFrameworks.includes(f));
+  console.log(`[${new Date().toISOString()}] Invalid frameworks found: ${JSON.stringify(invalidFrameworks)}`);
   if (invalidFrameworks.length > 0) {
+    console.log(`[${new Date().toISOString()}] Framework validation FAILED`);
     return res.status(400).json({
       success: false,
       error: `Invalid framework keys: ${invalidFrameworks.join(', ')}. Valid keys: ${validFrameworks.join(', ')}`
     });
   }
+  console.log(`[${new Date().toISOString()}] Framework validation PASSED`);
 
   try {
     const client = new Anthropic({
@@ -298,6 +306,10 @@ router.post('/analyze-vendors', async (req: Request, res: Response) => {
 
   } catch (error: any) {
     console.error(`[${new Date().toISOString()}] Anthropic API error:`, error.message);
+    console.error(`[${new Date().toISOString()}] Full error:`, error);
+    if (error.stack) {
+      console.error(`[${new Date().toISOString()}] Stack trace:`, error.stack);
+    }
 
     // Never expose API key in error messages
     const safeErrorMessage = error.message?.includes('api_key')
