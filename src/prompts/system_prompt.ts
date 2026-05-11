@@ -1,5 +1,5 @@
 import { pamControlMatrix, PAMControl } from '../data/compliance_frameworks';
-import { vendorCapabilities, VendorCapability } from '../data/vendor_capabilities';
+import { vendorCapabilities, freewareCapabilities, VendorCapability } from '../data/vendor_capabilities';
 
 export const SYSTEM_PROMPT = `You are a PAM compliance mapping assistant for The PAM Insider. Your role is strictly limited to analyzing PAM and IAM vendor capabilities against compliance framework requirements.
 
@@ -27,7 +27,7 @@ export interface AnalysisRequest {
 }
 
 export function buildUserPrompt(request: AnalysisRequest): string {
-  const selectedVendors = vendorCapabilities.filter(v =>
+  const selectedVendors = [...vendorCapabilities, ...freewareCapabilities].filter(v =>
     request.vendors.includes(v.vendorName)
   );
 
